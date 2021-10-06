@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 module.exports = {
     mode: 'development',
     context: path.resolve(__dirname, 'src'),
-    entry: ["@babel/polyfill", "./index.js"],
+    entry: ["@babel/polyfill", "./index"],
     output: {
         path: path.resolve(__dirname ,'app'),
         filename: 'index.js',
@@ -22,6 +22,9 @@ module.exports = {
         compress: true,
         hot: true,
         port: 3000,
+    },
+    resolve: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.wasm'],
     },
     devtool: 'source-map',
     plugins: [
@@ -73,6 +76,11 @@ module.exports = {
                 use: {
                   loader: "babel-loader",
                 }
+            },
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
             },
         ]
     }
