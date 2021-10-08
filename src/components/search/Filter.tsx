@@ -1,12 +1,26 @@
-import React, { FC } from 'react'
-import { useSelector, useDispatch, RootStateOrAny } from 'react-redux'
+import React, { ChangeEvent, FC, useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { useTypedSelector } from '../../redux/hooks/useTypedSelector'
 import { changeFilterOptions } from '../../redux/actions'
 import { FILTER_CATEGORIES } from '../../const/filter-categories'
+import { EFilterCategoriesAll } from '../../types/types'
 
 const Filter: FC = () => {
 
     const dispatch = useDispatch()
-    const category = useSelector( (state: RootStateOrAny) => state.filter.category)
+    const category = useTypedSelector(state => state.filter.category)
+
+    const categorySelectHandler = useCallback((e: ChangeEvent<HTMLSelectElement>): void => {
+        if (e.target.value === 'rockets' ) {
+            dispatch(changeFilterOptions('category', EFilterCategoriesAll.rockets))
+            return
+        }
+        if (e.target.value === 'ships' ) {
+            dispatch(changeFilterOptions('category', EFilterCategoriesAll.ships))
+            return
+        }
+        return
+    }, [dispatch])
 
     return (
         <div className='filter'>
@@ -15,10 +29,10 @@ const Filter: FC = () => {
                     <select
                     className='category_select'
                     value={category}
-                    onChange={(e) => dispatch(changeFilterOptions('category', e.target.value))}
+                    onChange={categorySelectHandler}
                     >
                         {
-                            Object.keys(FILTER_CATEGORIES).map( (category: any) => {
+                            Object.keys(FILTER_CATEGORIES).map( (category: EFilterCategoriesAll) => {
                                 return <option className='category_option' key={category} value={category} >{category}</option>
                             } )
                         }

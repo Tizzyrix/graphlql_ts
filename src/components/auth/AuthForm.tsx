@@ -1,56 +1,52 @@
-import React, { useState, FC, MouseEventHandler} from 'react'
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux'
+import React, { useState, FC } from 'react'
+import { useDispatch } from 'react-redux'
+import { useTypedSelector } from '../../redux/hooks/useTypedSelector'
 import { useGetAllUsers } from '../../graphql/hooks/use-get-all-users'
 import { useAddUser } from '../../graphql/hooks/use-add-user'
 import { useDeleteUser } from '../../graphql/hooks/use-delete-user'
-import { authUser } from '../../utils/utils'
 import { LogInAction } from '../../redux/actions'
+import {IUser} from '../../types/types'
 import UserList from './UsersList'
 
 
-const RegForm: FC = () => {
+const AuthForm: FC = () => {
 
     const dispatch = useDispatch()
-
-    const isLoggedIn = useSelector( (state: RootStateOrAny): boolean => state.auth.isLoggedIn)
+    const isLoggedIn = useTypedSelector(state => state.auth.isLoggedIn)
 
     const [inputLogin, setInputLogin] = useState('')
     const [inputPassword, setInputPassword] = useState('')
 
     const { data, loading, error } = useGetAllUsers()
-    // Есть ли вариант лучше вытащить юзеров из даты ?
-    const users = data?.users
+    const users = data?.users || []
 
-    const submitHandler = (e: any): void => {
-        e.preventDefault()
-    } 
-    const inputLoginHandler = (e: any): void => {
-        setInputLogin(e.target.value)
-    }
-    const inputPasswordHandler = (e: any): void => {
-        setInputPassword(e.target.value)
+    const authUser = (users: Array<IUser>, inputLogin: string, inputPassword: string) => {
+        const index = users.findIndex( (item: IUser) =>  item.name === inputLogin  )
+        if (index === -1) return console.log('пользователь не найден')
+        if ( users[index]?.rocket !== inputPassword) return console.log('неверный пароль')
+        dispatch(LogInAction())
     }
 
     const deleteUser = useDeleteUser()
-    const adduser = useAddUser()
+    const addUser = useAddUser()
 
     return(
         <>
             <div className='auth'>
-                <form onSubmit={ e => submitHandler(e) } className='auth_form'>
+                <form onSubmit={ e => e.preventDefault() } className='auth_form'>
                     <div className='auth_inputs'>
                         <div className='login_input'>
                             <input
                             type='text'
                             value={inputLogin}
-                            onChange={ e => inputLoginHandler(e) }
+                            onChange={ e => setInputLogin(e.target.value) }
                             />
                         </div>
                         <div className='password_input'>
                             <input
                             type='text'
                             value={inputPassword}
-                            onChange={ e => inputPasswordHandler(e) }
+                            onChange={ e => setInputPassword(e.target.value) }
                             />
                         </div>
                     </div>
@@ -58,19 +54,19 @@ const RegForm: FC = () => {
                         <div className='auth_button'>
                             <button
                             type='button'
-                            onClick={ () => authUser(users, inputLogin, inputPassword, dispatch, LogInAction) }
+                            onClick={ () => authUser(users, inputLogin, inputPassword) }
                             >Войти</button>
                         </div>
                         <div className='registration_button'>
                             <button
                             type='button'
-                            onClick={ () => adduser(inputLogin, inputPassword) }
+                            onClick={ () => addUser(inputLogin, inputPassword) }
                             >Зарегистрироваться</button>
                         </div>
                         <div className='delete_button'>
                             <button
                             type='button'
-                            onClick={ () => deleteUser(inputLogin, inputPassword) }
+                            onClick={ () => deleteUser(inputLogin) }
                             >Удалить</button>
                         </div>
                     </div>
@@ -87,4 +83,4 @@ const RegForm: FC = () => {
 }
 
 
-export default RegForm
+export default AuthForm

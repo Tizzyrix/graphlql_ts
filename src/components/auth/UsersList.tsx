@@ -1,12 +1,13 @@
-import React, {FC} from 'react'
-import {IUser} from '../../types/types'
+import React, { FC } from 'react'
+import { ApolloError } from '@apollo/client'
+import { IUser } from '../../types/types'
 import LoadingSpinner from '../LoadingSpinner'
 import ErrorMessage from '../ErrorMessage'
 
 type UserListProps = {
-    users: [],
-    loading: any,
-    error: any,
+    users: IUser[],
+    loading: boolean,
+    error: ApolloError,
     isLoggedIn: boolean
 }
 
@@ -19,7 +20,7 @@ const UserList:FC<UserListProps> = ({ users, loading, error, isLoggedIn}) => {
     return(
         <div className='user-list'>
             {
-                users?.map( (user: IUser) =>
+                users.map( (user: IUser) =>
                 <div key={user.id}>
                     <h1>{user.name}</h1>
                     <h2>{user.rocket}</h2>

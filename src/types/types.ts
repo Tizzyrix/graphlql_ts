@@ -1,15 +1,22 @@
 import {ApolloError} from '@apollo/client'
 
-export interface IRocket {
-    name: string,
+export interface IRocketInfo {
+    country: string
+    description: string
     id: string
-} 
+    name: string
+    type: string
+    active: string
+}
 
-export interface IShip {
+export interface IShipInfo {
+    class: string,
     id: string,
+    image: string,
+    model: string,
     name: string,
-    image: string
-} 
+    type: string
+}
 
 export interface IUser {
     name: string,
@@ -17,13 +24,34 @@ export interface IUser {
     id: string
 }
 
-export interface IError {
-    message: any
+export type CustomHookResult<T> = {
+    loading: boolean,
+    data: T,
+    error: ApolloError
 }
 
-export type CustomHookResult = {
-    loading: boolean,
-    data: any,
-    error: ApolloError
+export type Ship = {
+    id: string,
+    name: string,
+    image: string
+}
+
+
+export type Rocket = {
+    id: string,
+    name: string
+}
+
+export type DataShips = {
+    ships: Ship[] 
+}
+
+export type DataRockets = {
+    rockets: Rocket[]
+}
+
+export enum EFilterCategoriesAll {
+    ships = 'ships',
+    rockets = 'rockets'
 }
 

@@ -1,57 +1,47 @@
-import React, {FC} from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux'
+import React, { FC } from 'react';
+import { useTypedSelector } from '../../redux/hooks/useTypedSelector'
 import { useParams } from 'react-router-dom'
-import { useGetRocket } from '../../graphql/hooks/use-get-rocket'
-import { useGetShip } from '../../graphql/hooks/use-get-ship'
-import { getItem } from '../../utils/utils'
-import { FILTER_CATEGORIES } from '../../const/filter-categories'
+import { dataRocket, useGetRocket } from '../../graphql/hooks/use-get-rocket'
+import { dataShip, useGetShip } from '../../graphql/hooks/use-get-ship'
+import { EFilterCategoriesAll } from '../../types/types'
 
 import ErrorMessage from '../../components/ErrorMessage'
 import LoadingSpinner from '../../components/LoadingSpinner'
+import ItemInfoShip from '../../components/ItemInfo/ItemInfoShip';
+import ItemInfoRocket from '../../components/ItemInfo/ItemInfoRocket';
 
 const ItemInfo: FC = () => {
 
     const { id } = useParams<{id: string}>()
 
-    const category = useSelector( (state: RootStateOrAny): string  => state.filter.category)
+    const category = useTypedSelector( state => state.filter.category )
 
-    const {data, error, loading} =  getItem(category, id ,useGetShip, useGetRocket)
+    const getItem = (category: EFilterCategoriesAll, id: string) => {
+        switch(category) {
+            case EFilterCategoriesAll.ships: {
+                return useGetShip(id)
+            }
+            case EFilterCategoriesAll.rockets: {
+                return useGetRocket(id)
+            }
+            default:
+                console.log('error in ItemInfo')
+        }
+    }
 
-
-    const item: any = data?.[FILTER_CATEGORIES[category]]
+    const { data, error, loading } =  getItem(category, id)
 
     if (loading) return <LoadingSpinner />
     if (error) return <ErrorMessage />
 
     return(
         <div className='item-info'>
-            <div className="item-info_id">
-                <span>{ item.id }</span>
-            </div>
-            <div className='item-info_name'>
-                <span>{item.name}</span>
-            </div>
-            <div className="item-info_type">
-                <span>{item.type}</span>
-            </div>
-            <div className="item-info_image">
-                <img src={item.image} />
-            </div>
-            <div className="item-info_class">
-                <span>{item.class}</span>
-            </div>
-            <div className="item-info_model">
-                <span>{item.model}</span>
-            </div>
-            <div className="item-info_country">
-                <span>{item.country}</span>
-            </div>
-            <div className="item-info_description">
-                <span>{item.description}</span>
-            </div>
-            <div className="item-info_active">
-                <span>{item.active}</span>
-            </div>
+            {
+                category === EFilterCategoriesAll.rockets ?
+                <ItemInfoRocket data={data as dataRocket} />
+                :
+                <ItemInfoShip data={data as dataShip} />
+            }
         </div>
     )
 }

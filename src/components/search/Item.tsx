@@ -16,9 +16,12 @@ const Item: FC<ItemProps> = ({item: {name, id, image} }) => {
                 <div className='item_id'>
                     <span>{id}</span>
                 </div>
-                <div className='item_image'>
-                    <img src={image} />
-                </div>
+                {
+                    image &&
+                    <div className='item_image'>
+                        <img src={image} />
+                    </div>
+                }
                 <div className='item_name'>
                     <span>{name}</span>
                 </div>

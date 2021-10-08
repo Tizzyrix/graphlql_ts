@@ -2,9 +2,9 @@ import React, { FC } from 'react'
 
 const NoMatchRoute: FC = () => {
     return(
-        <>
-            <div>noMatch!</div>
-        </>
+        <div className='no-match'>
+            <h1>No match route!</h1>
+        </div>
     )
 }
 

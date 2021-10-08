@@ -1,15 +1,13 @@
 import { useMutation } from '@apollo/client';
 import { USER_DELETE_MUTATION } from '../mutations/users/user-delete'
 import {GET_ALL_USERS_QUERY} from '../query/users/get-all-users'
-import {CustomHookResult} from '../../types/types'
 
+export const useDeleteUser = () :((inputLogin: string)=> void ) => {
 
-export const useDeleteUser = () :any => {
-
-    const [delUser] = useMutation(USER_DELETE_MUTATION)
+    const [setDeleteUser] = useMutation(USER_DELETE_MUTATION)
 
     const deleteUser = (inputLogin: string) => {
-        delUser({
+        setDeleteUser({
             variables: {
                 "deleteUsersWhere": {
                     "name": {
