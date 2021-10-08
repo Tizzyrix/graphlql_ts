@@ -1,10 +1,5 @@
 import React, {FC} from 'react'
 
-
-interface ErrorMessageProp{
-    error: {}
-}
-
 const Error: FC = () => {
 
     return (

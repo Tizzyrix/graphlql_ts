@@ -1,15 +1,13 @@
 import { useMutation } from '@apollo/client';
 import { USER_ADD_MUTATION } from '../mutations/users/user-add'
 import {GET_ALL_USERS_QUERY} from '../query/users/get-all-users'
-import {CustomHookResult} from '../../types/types'
 
+export const useAddUser = (): ((inputLogin: string, inputPassword: string) => void) => {
 
-export const useAddUser = (): any => {
-
-    const [newUser] =  useMutation(USER_ADD_MUTATION)
+    const [setNewUser] =  useMutation(USER_ADD_MUTATION)
 
     const addUser = (inputLogin: string, inputPassword: string) => {
-        newUser({
+        setNewUser({
             variables: {
                 "insertUsersObjects": {
                     "name": `${inputLogin}`,
@@ -19,7 +17,5 @@ export const useAddUser = (): any => {
             refetchQueries: [GET_ALL_USERS_QUERY]
         })
     }
-
     return addUser
-
 }

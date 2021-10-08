@@ -1,12 +1,12 @@
-import {AUTH} from '../types'
+import { IAuthState, AuthAction, AuthActionTypes } from '../types/authTypes'
 
-const initialState = {
+const initialState: IAuthState = {
     isLoggedIn: false
 }
 
-export default function authReducer (state = initialState, action: any) {
+export default function authReducer (state = initialState, action: AuthAction) {
     switch(action.type) {
-        case AUTH.LOG_IN: {
+        case AuthActionTypes.LOG_IN: {
             return {...state, isLoggedIn: true}
         }
         default: 

@@ -1,15 +1,14 @@
-import {FILTER} from '../types'
+import { EFilterCategoriesAll } from '../../types/types'
+import {IFilterState, FilterActionTypes, fitlerAction} from '../types/filterTypes'
 
-const initialState = {
-    category: 'rockets',
-    search: '',
+const initialState: IFilterState = {
+    category: EFilterCategoriesAll.rockets,
 }
 
-export default function filterReducer (state = initialState, action: any) {
+export default function filterReducer (state = initialState, action: fitlerAction) {
     switch(action.type) {
-        case FILTER.CATEGORY_CHANGE: {
-            const {value} = action.payload
-            return {...state, category: value}
+        case FilterActionTypes.CATEGORY_CHANGE: {
+            return { ...state, category: action.payload }
         }
         default:
             return state
