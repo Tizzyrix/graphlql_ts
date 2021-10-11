@@ -1,9 +1,9 @@
 type FilterCategoryType = {
-    ships: string,
-    rockets: string
-}
+  ships: string;
+  rockets: string;
+};
 
 export const FILTER_CATEGORIES: FilterCategoryType = {
-    ships: 'ship',
-    rockets: 'rocket'
-}
+  ships: 'ship',
+  rockets: 'rocket',
+};

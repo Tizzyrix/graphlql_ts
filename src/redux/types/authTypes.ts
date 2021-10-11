@@ -1,13 +1,13 @@
 export interface IAuthState {
-    isLoggedIn: boolean
+  isLoggedIn: boolean;
 }
 
 export enum AuthActionTypes {
-    LOG_IN = 'LOG_IN'
+  LOG_IN = 'LOG_IN',
 }
 
 interface logInAction {
-    type: AuthActionTypes.LOG_IN
+  type: AuthActionTypes.LOG_IN;
 }
 
-export type AuthAction = logInAction
+export type AuthAction = logInAction;
