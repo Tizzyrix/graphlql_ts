@@ -1,16 +1,16 @@
-import { EFilterCategoriesAll } from "../../types/types";
+import { EFilterCategoriesAll } from '../../types/types';
 
 export interface IFilterState {
-    category: EFilterCategoriesAll
+  category: EFilterCategoriesAll;
 }
 
 export enum FilterActionTypes {
-    CATEGORY_CHANGE = 'CATEGORY_CHANGE'
+  CATEGORY_CHANGE = 'CATEGORY_CHANGE',
 }
 
 interface ICategoryChangeAction {
-    type: FilterActionTypes.CATEGORY_CHANGE,
-    payload: EFilterCategoriesAll
+  type: FilterActionTypes.CATEGORY_CHANGE;
+  payload: EFilterCategoriesAll;
 }
 
-export type fitlerAction = ICategoryChangeAction
+export type fitlerAction = ICategoryChangeAction;
